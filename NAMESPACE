@@ -2,8 +2,10 @@
 
 export(hpwd)
 export(pwd)
+export(sbi)
 export(stprod)
 export(stsum)
 export(swd)
 importFrom(Rcpp,sourceCpp)
-useDynLib(Spbsampling)
+importFrom(stats,var)
+useDynLib(Spbsampling, .registration = TRUE)
