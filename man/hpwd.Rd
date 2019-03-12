@@ -2,27 +2,41 @@
 % Please edit documentation in R/RcppExports.R
 \name{hpwd}
 \alias{hpwd}
-\title{Heuristic Product Within Distance (Spatially Balanced Sampling).}
+\title{Heuristic Product Within Distance (Spatially Balanced Sampling Design)}
 \usage{
 hpwd(dis, nsamp, nrepl = 1L)
 }
 \arguments{
-\item{dis}{A distance matrix NxN that specifies how far are all the pairs of units in the population.}
+\item{dis}{A distance matrix NxN that specifies how far are all the pairs
+of units in the population.}
 
 \item{nsamp}{Sample size.}
 
 \item{nrepl}{Number of samples to draw (default = 1).}
 }
 \value{
-Return a matrix 2x\code{nrepl} with \code{nrepl} samples drawn. In particular, the element \eqn{a_{ij}}{a_ij} is the j-th unit of the population drawn in the i-th sample.
+Return a matrix \code{nrepl} x \code{nsamp}, which contains the
+\code{nrepl} selected samples, each of them stored in a row. In particular,
+the i-th row contains all labels of units selected in the i-th sample.
 }
 \description{
-The function \code{hpwd} provides a fast selection of spatially balanced samples: it is a heuristic and a fast implemention of the algorithm \code{\link{pwd}}.
-It generates samples approximately with the same probabilities of the \code{\link{pwd}} but with a significantly smaller number of steps.
-In fact, this algorithm randomly selects a sample of size \eqn{n} exactly with \eqn{n} steps, updating at each step the selection probability of not-selected units, depending on their distance from the units, that were already selected in the previous steps.
-To have constant inclusion probabilities \eqn{\pi_{i}=nsamp/N}, where \eqn{nsamp} is sample size and \eqn{N} is population size, the distance matrix has to be standardized with function \code{\link{stprod}}.
-Note that there is a parameter \eqn{\beta} which regulates the spread of the sample: The higher \eqn{\beta} is, the more the sample is going to be spread.
-This parameter is regulated by the exponent of the distance matrix (D^1 -> \eqn{\beta = 1}, D^10 -> \eqn{\beta = 10}).
+Selects spatially balanced samples through the use of
+Heuristic Product Within Distance design (HPWD). The level of the spread
+can be choosen through the parameter \eqn{\beta}, which is is regulated by
+the exponent of the distance matrix (D^1 -> \eqn{\beta = 1},
+D^10 -> \eqn{\beta = 10}). The higher \eqn{\beta} is, the more the sample
+is going to be spread. To have constant inclusion probabilities
+\eqn{\pi_{i}=nsamp/N}, where \eqn{nsamp} is sample size and \eqn{N} is
+population size, the distance matrix has to be standardized with function
+\code{\link{stprod}}.
+}
+\details{
+The HPWD design generates samples approximately with the same
+probabilities of the \code{\link{pwd}} but with a significantly smaller
+number of steps. In fact, this algorithm randomly selects a sample of size
+\eqn{n} exactly with \eqn{n} steps, updating at each step the selection
+probability of not-selected units, depending on their distance from the
+units that were already selected in the previous steps.
 }
 \examples{
 # Example 1
@@ -49,7 +63,9 @@ samples <- hpwd(stand_dist, 15, 100) # drawn samples
 }
 }
 \references{
-\insertRef{BIMJ:BIMJ1785}{Spbsampling}
+Benedetti R, Piersimoni F (2017). “A spatially balanced design with
+probability function proportional to the within sample distance.”
+\emph{Biometrical Journal}, \strong{59}(5), 1067–1084.
 
-\insertRef{fast_selection}{Spbsampling}
+Benedetti R, Piersimoni F (2017). “Fast Selection of Spatially Balanced Samples.” \emph{arXiv}.
 }

@@ -1,6 +1,6 @@
 Package: Spbsampling
 Title: Spatially Balanced Sampling
-Version: 1.1.0
+Version: 1.2.0
 Authors@R: c(
     person("Francesco", "Pantalone", email = "pantalone.fra@gmail.com", role = c("aut","cre")),
     person("Roberto", "Benedetti", role = "aut"),
@@ -12,14 +12,13 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp, RcppArmadillo
-Imports: Rcpp, Rdpack
-RdMacros: Rdpack
+Imports: Rcpp
 RoxygenNote: 6.1.1
 NeedsCompilation: yes
-Packaged: 2019-01-21 17:38:54 UTC; francesco
+Packaged: 2019-03-12 07:48:56 UTC; francesco
 Author: Francesco Pantalone [aut, cre],
   Roberto Benedetti [aut],
   Federica Piersimoni [aut]
 Maintainer: Francesco Pantalone <pantalone.fra@gmail.com>
 Repository: CRAN
-Date/Publication: 2019-01-21 18:20:09 UTC
+Date/Publication: 2019-03-12 08:32:45 UTC
