@@ -16,14 +16,14 @@ stprod(mat, vec, differ = 1e-15, niter = 1000L)
 \item{niter}{An integer with the maximum number of iterations (default = 1000).}
 }
 \value{
-Return a standardized distance matrix of size NxN.
+Returns a standardized distance matrix of size NxN.
 }
 \description{
 Standardizes a distance matrix to fixed rows and columns
 products. The function iteratively constrains a logarithmic transformed
 matrix to know products, and in order to keep the symmetry of the matrix,
 at each iteration performs an average with its transpose. When the known
-products are all equal to a constant (e.g. 1), this method provides a
+products are all equal to a constant (e.g. 0), this method provides a
 simple and accurate way to scale a distance matrix to a doubly stochastic
 matrix.
 }
@@ -37,17 +37,18 @@ points.
 \dontshow{
 d <- matrix(runif(200), 100, 2)
 dis <- as.matrix(dist(d))
-vec <- rep(0, nrow(dis))
-stand_dist <- stprod(dis, vec, 1e-15, 1000)
+con <- rep(0, nrow(dis))
+stand_dist <- stprod(mat = dis, vec = con)
 }
 \donttest{
 dis <- as.matrix(dist(cbind(simul1$x, simul1$y))) # distance matrix
 con <- rep(0, nrow(dis)) # vector of constraints
-stand_dist <- stprod(dis, con) # standardized matrix
+stand_dist <- stprod(mat = dis, vec = con) # standardized matrix
 }
 }
 \references{
-Benedetti R, Piersimoni F (2017). “A spatially balanced design with
-probability function proportional to the within sample distance.”
-\emph{Biometrical Journal}, \strong{59}(5), 1067–1084.
+Benedetti R, Piersimoni F (2017). A spatially balanced design with
+probability function proportional to the within sample distance.
+\emph{Biometrical Journal}, \strong{59}(5), 1067-1084.
+\url{https://doi.org/10.1002/bimj.201600194}
 }
