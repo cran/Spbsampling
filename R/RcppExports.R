@@ -19,7 +19,7 @@
 #' @param dis A distance matrix NxN that specifies how far all the pairs
 #' of units in the population are.
 #' @param nsamp Sample size.
-#' @param bexp Parameter \eqn{\beta} for the algorithm. The higher
+#' @param beta Parameter \eqn{\beta} for the algorithm. The higher
 #' \eqn{\beta} is, the more the sample is going to be spread (default = 10).
 #' @param nrepl Number of samples to draw (default = 1).
 #' @return Returns a matrix \code{nrepl} x \code{nsamp}, which contains the
@@ -49,15 +49,15 @@
 #'
 #' # Example 3
 #' # Draw 2 samples of dimension 15 with constant inclusion probabilities
-#' # equal to nsamp/N, with N = population size, and an increased level of spread, bexp = 20
+#' # equal to nsamp/N, with N = population size, and an increased level of spread, beta = 20
 #' dis <- as.matrix(dist(cbind(lucas_abruzzo$x, lucas_abruzzo$y))) # distance matrix
 #' con <- rep(0, nrow(dis)) # vector of constraints
 #' stand_dist <- stprod(mat = dis, vec = con) # standardized matrix
-#' s <- hpwd(dis = stand_dist, nsamp = 15, bexp = 20, nrepl = 2) # drawn samples
+#' s <- hpwd(dis = stand_dist, nsamp = 15, beta = 20, nrepl = 2) # drawn samples
 #' }
 #' @export
-hpwd <- function(dis, nsamp, bexp = 10, nrepl = 1L) {
-    .Call(`_Spbsampling_hpwd`, dis, nsamp, bexp, nrepl)
+hpwd <- function(dis, nsamp, beta = 10, nrepl = 1L) {
+    .Call(`_Spbsampling_hpwd`, dis, nsamp, beta, nrepl)
 }
 
 #' Product Within Distance (Spatially Balanced Sampling Design)
@@ -71,7 +71,7 @@ hpwd <- function(dis, nsamp, bexp = 10, nrepl = 1L) {
 #' @param dis A distance matrix NxN that specifies how far all the pairs
 #' of units in the population are.
 #' @param nsamp Sample size.
-#' @param bexp Parameter \eqn{\beta} for the algorithm. The higher
+#' @param beta Parameter \eqn{\beta} for the algorithm. The higher
 #' \eqn{\beta} is, the more the sample is going to be spread (default = 10).
 #' @param nrepl Number of samples to draw (default = 1).
 #' @param niter Number of iterations for the algorithm. More iterations are
@@ -100,15 +100,15 @@ hpwd <- function(dis, nsamp, bexp = 10, nrepl = 1L) {
 #'
 #' # Example 3
 #' # Draw 2 samples of dimension 15 with constant inclusion probabilities
-#' # equal to nsamp/N, with N = population size, and an increased level of spread, bexp = 20
+#' # equal to nsamp/N, with N = population size, and an increased level of spread, beta = 20
 #' dis <- as.matrix(dist(cbind(lucas_abruzzo$x, lucas_abruzzo$y))) # distance matrix
 #' con <- rep(0, nrow(dis)) # vector of constraints
 #' stand_dist <- stprod(mat = dis, vec = con) # standardized matrix
-#' s <- pwd(dis = stand_dist, nsamp = 15, bexp = 20, nrepl = 2)  # drawn samples
+#' s <- pwd(dis = stand_dist, nsamp = 15, beta = 20, nrepl = 2)  # drawn samples
 #' }
 #' @export
-pwd <- function(dis, nsamp, bexp = 10, nrepl = 1L, niter = 10L) {
-    .Call(`_Spbsampling_pwd`, dis, nsamp, bexp, nrepl, niter)
+pwd <- function(dis, nsamp, beta = 10, nrepl = 1L, niter = 10L) {
+    .Call(`_Spbsampling_pwd`, dis, nsamp, beta, nrepl, niter)
 }
 
 #' Spatial Balance Index
@@ -171,7 +171,7 @@ sbi <- function(dis, pi, s) {
 #' points.
 #'
 #' @param mat A distance matrix size NxN.
-#' @param vec A vector of row (column) constraints.
+#' @param con A vector of row (column) constraints.
 #' @param differ A scalar with the maximum accepted difference with the constraint (default = 1e-15).
 #' @param niter An integer with the maximum number of iterations (default = 1000).
 #' @return Returns a standardized distance matrix of size NxN.
@@ -185,16 +185,16 @@ sbi <- function(dis, pi, s) {
 #' d <- matrix(runif(200), 100, 2)
 #' dis <- as.matrix(dist(d))
 #' con <- rep(0, nrow(dis))
-#' stand_dist <- stprod(mat = dis, vec = con)
+#' stand_dist <- stprod(mat = dis, con = con)
 #' }
 #' \donttest{
 #' dis <- as.matrix(dist(cbind(simul1$x, simul1$y))) # distance matrix
 #' con <- rep(0, nrow(dis)) # vector of constraints
-#' stand_dist <- stprod(mat = dis, vec = con) # standardized matrix
+#' stand_dist <- stprod(mat = dis, con = con) # standardized matrix
 #' }
 #' @export
-stprod <- function(mat, vec, differ = 1e-15, niter = 1000L) {
-    .Call(`_Spbsampling_stprod`, mat, vec, differ, niter)
+stprod <- function(mat, con, differ = 1e-15, niter = 1000L) {
+    .Call(`_Spbsampling_stprod`, mat, con, differ, niter)
 }
 
 #' Standardize a symmetric matrix (distances) to fixed row (column) totals
@@ -212,7 +212,7 @@ stprod <- function(mat, vec, differ = 1e-15, niter = 1000L) {
 #' points.
 #'
 #' @param  mat A distance matrix size NxN.
-#' @param  vec A vector of row (column) constraints.
+#' @param  con A vector of row (column) constraints.
 #' @param differ A scalar with the maximum accepted difference with the constraint (default = 1e-15).
 #' @param niter An integer with the maximum number of iterations (default = 1000).
 #' @return Returns a standardized distance matrix of size NxN.
@@ -224,10 +224,10 @@ stprod <- function(mat, vec, differ = 1e-15, niter = 1000L) {
 #' @examples
 #' dis <- as.matrix(dist(cbind(simul2$x, simul2$y))) # distance matrix
 #' con <- rep(1, nrow(dis)) # vector of constraints
-#' stand_dist <- stsum(mat = dis, vec = con) # standardized matrix
+#' stand_dist <- stsum(mat = dis, con = con) # standardized matrix
 #' @export
-stsum <- function(mat, vec, differ = 1e-15, niter = 1000L) {
-    .Call(`_Spbsampling_stsum`, mat, vec, differ, niter)
+stsum <- function(mat, con, differ = 1e-15, niter = 1000L) {
+    .Call(`_Spbsampling_stsum`, mat, con, differ, niter)
 }
 
 #' Sum Within Distance (Spatially Balanced Sampling Design)
@@ -241,7 +241,7 @@ stsum <- function(mat, vec, differ = 1e-15, niter = 1000L) {
 #' @param dis A distance matrix NxN that specifies how far all the pairs
 #' of units in the population are.
 #' @param nsamp Sample size.
-#' @param bexp Parameter \eqn{\beta} for the algorithm. The higher
+#' @param beta Parameter \eqn{\beta} for the algorithm. The higher
 #' \eqn{\beta} is, the more the sample is going to be spread.
 #' @param nrepl Number of samples to draw (default = 1).
 #' @param niter Number of iterations for the algorithm. More iterations are
@@ -270,14 +270,14 @@ stsum <- function(mat, vec, differ = 1e-15, niter = 1000L) {
 #'
 #' # Example 3
 #' # Draw 2 samples of dimension 15 with constant inclusion probabilities
-#' # equal to nsamp/N, with N = population size and an increased level of spread, i.e. bexp = 20
+#' # equal to nsamp/N, with N = population size and an increased level of spread, i.e. beta = 20
 #' dis <- as.matrix(dist(cbind(income_emilia$x_coord,income_emilia$y_coord))) # distance matrix
 #' con <- rep(1, nrow(dis)) # vector of constraints
 #' stand_dist <- stsum(mat = dis, con = vec) # standardized matrix
-#' s <- swd(dis = stand_dist, nsamp = 15, bexp = 20, nrepl = 2)  # drawn samples
+#' s <- swd(dis = stand_dist, nsamp = 15, beta = 20, nrepl = 2)  # drawn samples
 #' }
 #' @export
-swd <- function(dis, nsamp, bexp = 10, nrepl = 1L, niter = 10L) {
-    .Call(`_Spbsampling_swd`, dis, nsamp, bexp, nrepl, niter)
+swd <- function(dis, nsamp, beta = 10, nrepl = 1L, niter = 10L) {
+    .Call(`_Spbsampling_swd`, dis, nsamp, beta, nrepl, niter)
 }
 
