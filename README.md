@@ -30,6 +30,10 @@ install.packages("Spbsampling")
 
 ## References
 
+Pantalone F, Benedetti R, Piersimoni F (2022). An R Package for 
+Spatially Balanced Sampling. *Journal of Statistical Software, Code Snippets*,
+103(2), 1-22.
+
 Benedetti R, Piersimoni F (2017). A spatially balanced design with
 probability function proportional to the within sample distance.
 *Biometrical Journal*, 59(5), 1067–1084.
